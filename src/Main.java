@@ -18,7 +18,7 @@ public class Main
     /** VARIABLES */
 
     public static ArrayList<String> Data = new ArrayList<String>();
-    public static ArrayList<String> Valid_Data = new ArrayList<String>();
+    public static ArrayList<String> Invalid_Data = new ArrayList<String>();
     public static File File = new File("data/input340.txt");
 
     public static int Total_Processed = 0;
@@ -87,9 +87,8 @@ public class Main
 
             Total_Processed += 1;       // Add count to total processed
 
-            if (remainder == 0) {
-                Valid_Data.add(line);   // Add valid number to Valid_Data (Array_List)
-            } else {
+            if (remainder > 0) {
+                Invalid_Data.add(line);   // Add Invalid number to Valid_Data (Array_List)
                 Invalid_Processed += 1; // Add count to Invalid Processed
             }
         }
@@ -98,28 +97,27 @@ public class Main
     /*
      * Method: Output_Data
      * Usage: Output count of Total Processed Records and Invalid Processed
-     *        Add Valid ISBN numbers to output340.txt (Create File)
+     *        Add Invalid ISBN numbers to output340.txt (Create File)
      */
     public static void Output_Data ()
     {
-        File Output_File = new File("data/output340.txt");  // Create File for Valid ISBN numbers
+        File Output_File = new File("data/output340.txt");  // Create File for Invalid ISBN numbers
 
         /* Go through each line to add hyphens backs */
-        for (String Raw_Line : Valid_Data)                           // Go through every line of the Valid Data
+        for (String Raw_Line : Invalid_Data)                           // Go through every line of the Invalid Data
         {
-            int index = Valid_Data.indexOf(Raw_Line);                // Get index of line
+            int index = Invalid_Data.indexOf(Raw_Line);                // Get index of line
 
             String line = "";
-
             /* Update line with hyphens */
             line = Raw_Line.substring(0, 4) + "-" + Raw_Line.substring(4, 8) + "-" + Raw_Line.substring(8);
 
-            Valid_Data.set(index, line);                              // Replace the old line in the data with the new line
+            Invalid_Data.set(index, line);                              // Replace the old line in the data with the new line
         }
 
         /* Make a BufferedWriter to write to the file: "output340.txt" */
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/output340.txt"))) {
-            for (String line : Valid_Data)
+            for (String line : Invalid_Data)
             {
                 writer.write(line); // Write the line
                 writer.newLine();   // Go to the next line
